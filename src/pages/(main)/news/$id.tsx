@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import {
   AppBar,
   Toolbar,
@@ -31,7 +32,6 @@ export const NewsById = () => {
   const [newsTitle, setNewsTitle] = useState("");
   const [newsDescription, setNewsDescription] = useState("");
   const [newsCreatedAt, setNewsCreatedAt] = useState("");
-  const [category, setCategory] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
@@ -43,7 +43,6 @@ export const NewsById = () => {
       setNewsTitle(attributes.title);
       setNewsDescription(attributes.description);
       setNewsCreatedAt(attributes.createdAt);
-      setCategory(attributes.categories);
       setImageUrl(attributes.cover?.url || "");
       toast.success("Notícia carregada com sucesso!");
     }

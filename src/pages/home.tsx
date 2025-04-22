@@ -19,11 +19,10 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useJornals } from "@/hooks/journals";
 import Icon from "@/assets/img/logo_visao.png";
-import { Link, useNavigate } from "@tanstack/react-router";
 import { convertToBrazilianDateWithHours } from "@/utils/data";
 
 export const Home = () => {
-  const { jornalData, isLoading } = useJornals();
+  const { jornalData, loading } = useJornals(); // Usando loading em vez de isLoading
   const [bannerNews, setBannerNews] = useState<any>({});
 
   const autores = [
@@ -34,8 +33,6 @@ export const Home = () => {
   ];
 
   const devs = ["Walter Moura", "Alison"];
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (jornalData?.success) {
@@ -58,17 +55,16 @@ export const Home = () => {
         >
           {/* Lado esquerdo */}
           <Box>
-      <IconButton edge="start" color="inherit" onClick={() => console.log("Abrir menu")}>
-        <MenuIcon sx={{ color: "#fff" }} />
-      </IconButton>
-    </Box>
+            <IconButton edge="start" color="inherit" onClick={() => console.log("Abrir menu")}>
+              <MenuIcon sx={{ color: "#fff" }} />
+            </IconButton>
+          </Box>
 
           {/* Centro - Logo */}
           <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
             <img
               src={Icon}
               alt="Logo"
-              onClick={() => navigate({ to: "/" })}
               style={{
                 width: 150,
                 cursor: "pointer",
@@ -87,7 +83,7 @@ export const Home = () => {
 
       {/* Main Content - Banner */}
       <Box sx={{ p: 2 }}>
-        {isLoading || !bannerNews?.title ? (
+        {loading || !bannerNews?.title ? (
           <Card>
             <Skeleton variant="rectangular" height={200} />
             <CardContent>
@@ -102,124 +98,103 @@ export const Home = () => {
             margin: "0 auto",   // Centraliza o banner na tela
             borderRadius: "2px", // (opcional) se você quiser arredondar as bordas
           }}>
-            <Link
-              style={{ cursor: "pointer", color: "#000" }}
-              to={`/news/${bannerNews?.documentId}`}
-            >
-
-              
               <CardMedia
                 component="img"
                 height="200"
                 image={bannerNews?.cover?.url}
                 alt="news"
               />
-            </Link>
             <CardContent>
-            <CardContent>
-  <Link
-    style={{ cursor: "pointer", color: "#000" }}
-    to={`/news/${bannerNews?.documentId}`}
-  >
-    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      {/* Lado esquerdo - Título e Data */}
-      <Box>
-        <Typography variant="caption" color="textSecondary">
-          {convertToBrazilianDateWithHours(bannerNews?.publishedAt)}
-        </Typography>
-        <Typography variant="h6">{bannerNews?.title}</Typography>
-      </Box>
+              
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  {/* Lado esquerdo - Título e Data */}
+                  <Box>
+                    <Typography variant="caption" color="textSecondary">
+                      {convertToBrazilianDateWithHours(bannerNews?.publishedAt)}
+                    </Typography>
+                    <Typography variant="h6">{bannerNews?.title}</Typography>
+                  </Box>
 
-      {/* Lado direito - Texto */}
-      <Box sx={{ maxWidth: "60%", paddingLeft: 2 }}>
-        <Typography variant="body2" color="textSecondary">
-          {bannerNews?.description}
-        </Typography>
-      </Box>
-    </Box>
-  </Link>
-</CardContent>
-
+                  {/* Lado direito - Texto */}
+                  <Box sx={{ maxWidth: "60%", paddingLeft: 2 }}>
+                    <Typography variant="body2" color="textSecondary">
+                      {bannerNews?.description}
+                    </Typography>
+                  </Box>
+                </Box>
             </CardContent>
           </Card>
         )}
       </Box>
 
       {/* Espaço entre o Banner e as Últimas Notícias */}
-
       <Box
-  sx={{
-    height: "400px",
-    backgroundColor: "#282828",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 2,
-    gap: 4,
-  }}
->
-  {/* Imagem à esquerda */}
-  <Box sx={{ flex: 1, maxWidth: 400 }}>
-    <img
-      src={bannerNews?.cover?.url}
-      alt="Notícia"
-      style={{
-        width: "100%",
-        height: "auto",
-        objectFit: "cover",
-      }}
-    />
-  </Box>
+        sx={{
+          height: "400px",
+          backgroundColor: "#282828",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 2,
+          gap: 4,
+        }}
+      >
+        {/* Imagem à esquerda */}
+        <Box sx={{ flex: 1, maxWidth: 400 }}>
+          <img
+            src={bannerNews?.cover?.url}
+            alt="Notícia"
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "cover",
+            }}
+          />
+        </Box>
 
-  {/* Conteúdo à direita - com link */}
-  <Link
-    to={`/news/${bannerNews?.documentId}`}
-    style={{ flex: 2, textDecoration: "none", color: "inherit" }}
-  >
-    <Box
-      sx={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        color: "#fff",
-        paddingY: 2,
-      }}
-    >
-      {/* Título e texto */}
-      <Box>
-        <Typography
-          variant="h5"
-          fontSize="18px"
-          fontWeight="bold"
-          gutterBottom
-          sx={{ textAlign: "left", marginBottom: "50px"}}
-        >
-          {bannerNews?.title}
-        </Typography>
+        {/* Conteúdo à direita - com link */}
+          <Box
+            sx={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              color: "#fff",
+              paddingY: 2,
+            }}
+          >
+            {/* Título e texto */}
+            <Box>
+              <Typography
+                variant="h5"
+                fontSize="18px"
+                fontWeight="bold"
+                gutterBottom
+                sx={{ textAlign: "left", marginBottom: "50px" }}
+              >
+                {bannerNews?.title}
+              </Typography>
 
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: "center",
-            maxWidth: "90%",
-            marginX: "auto",
-          }}
-        >
-          {bannerNews?.description}
-        </Typography>
+              <Typography
+                variant="body1"
+                sx={{
+                  textAlign: "center",
+                  maxWidth: "90%",
+                  marginX: "auto",
+                }}
+              >
+                {bannerNews?.description}
+              </Typography>
+            </Box>
+
+            {/* Data */}
+            <Box sx={{ alignSelf: "flex-end", marginTop: 20 }}>
+              <Typography variant="caption" color="gray">
+                {convertToBrazilianDateWithHours(bannerNews?.publishedAt)}
+              </Typography>
+            </Box>
+          </Box>
       </Box>
-
-      {/* Data */}
-      <Box sx={{ alignSelf: "flex-end", marginTop: 20, }}>
-        <Typography variant="caption" color="gray">
-          {convertToBrazilianDateWithHours(bannerNews?.publishedAt)}
-        </Typography>
-      </Box>
-    </Box>
-  </Link>
-</Box>
-
 
       {/* News Grid */}
       <section style={{ display: "flex" }}>
@@ -233,7 +208,7 @@ export const Home = () => {
           }}
         >
           <h1>Últimas notícias:</h1>
-          {isLoading
+          {loading
             ? Array.from({ length: 3 }).map((_, i) => (
                 <Card key={i} sx={{ display: "flex", paddingBottom: 0 }}>
                   <Skeleton variant="rectangular" width={300} height={200} />
@@ -247,10 +222,6 @@ export const Home = () => {
               ))
             : jornalData?.data.data.map((item: any) => (
                 <Card key={item.id} sx={{ display: "flex", paddingBottom: 0 }}>
-                  <Link
-                    style={{ cursor: "pointer", color: "#000" }}
-                    to={`/news/${item?.documentId}`}
-                  >
                     <CardMedia
                       component="img"
                       sx={{
@@ -261,7 +232,6 @@ export const Home = () => {
                       image={item?.cover?.url}
                       alt="news"
                     />
-                  </Link>
                   <CardContent>
                     {item?.categories.map((category: any, index: number) => (
                       <Typography
@@ -277,10 +247,6 @@ export const Home = () => {
                       </Typography>
                     ))}
 
-                    <Link
-                      style={{ cursor: "pointer", color: "#000" }}
-                      to={`/news/${item?.documentId}`}
-                    >
                       <Typography variant="subtitle1" fontWeight="bold">
                         {item.title}
                       </Typography>
@@ -290,14 +256,13 @@ export const Home = () => {
                       <Typography variant="body2" color="textSecondary">
                         {convertToBrazilianDateWithHours(item.createdAt)}
                       </Typography>
-                    </Link>
                   </CardContent>
                 </Card>
               ))}
         </section>
 
         {/* Responsáveis */}
-        <Grid sx={{ padding: "1rem" }} item xs={12} md={6}>
+        <Grid container sx={{ padding: "1rem" }} >
           <Card>
             <CardContent>
               <Typography
